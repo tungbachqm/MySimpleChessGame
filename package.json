@@ -15,7 +15,10 @@
   "author": "Tung Hoang",
   "license": "ISC",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.45.1",
+    "@typescript-eslint/parser": "^5.45.1",
     "@webpack-cli/generators": "^3.0.0",
+    "eslint": "^8.29.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.0",
     "ts-loader": "^9.4.1",
