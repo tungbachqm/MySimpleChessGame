@@ -32,9 +32,3 @@ export type Piece = {
   moved: boolean;
 }
 export type PiecesRecord = Record<number, Piece>;
-export type StoreState = {
-  turnCount: number;
-  player: PlayerColor;
-  board: Board;
-  piecesRecord: PiecesRecord;
-}
