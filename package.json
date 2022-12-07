@@ -32,6 +32,7 @@
     "workbox-webpack-plugin": "^6.5.4"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.js": "eslint --cache --fix",
+    "*.ts": "eslint --cache --fix"
   }
 }
