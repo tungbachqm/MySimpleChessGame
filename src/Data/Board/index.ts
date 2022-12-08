@@ -59,6 +59,13 @@ export class BoardController {
     this.changeSide('W');
   }
 
+  public getBoard(){
+    return this.board;
+  }
+  public getPiecesRecord(){
+    return this.piecesRecord;
+  }
+
   private getKing(color: PlayerColor){
     const { piecesRecord, kingsIdRecord} = this;
     return piecesRecord[kingsIdRecord[color]];

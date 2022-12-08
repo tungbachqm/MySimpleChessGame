@@ -22,6 +22,9 @@ type Params = {
   record: PiecesRecord;
   king: Piece;
 }
+function genKey(r: number, c:number) {
+  return `r${r}c${c}`;
+}
 export const getMovesNotCheck: (params: Params) => MovesRecord = ({
   piecesId,
   board,
@@ -43,9 +46,6 @@ export const getMovesNotCheck: (params: Params) => MovesRecord = ({
     if (pinnedMoveRecord[pieceId]){
       const pinnedMoves = pinnedMoveRecord[pieceId];
       const pinnedMovesSet = new Set<string>();
-      function genKey(r: number, c:number) {
-        return `r${r}c${c}`;
-      }
       pinnedMoves.forEach((pos) => {
         pinnedMovesSet.add(genKey(pos.r, pos.c));
       });

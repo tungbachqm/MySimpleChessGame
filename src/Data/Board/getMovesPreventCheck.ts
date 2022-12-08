@@ -134,6 +134,7 @@ const getMovesPreventCheckByCover: (params: GetMovesPreventCheckParams) => Moves
           kingPos,
           piecePos: pos
         })
+        break;
       }
       case (PIECE_NAME.R): {
         const isSameRow = pos.r === kingPos.r;
@@ -141,7 +142,8 @@ const getMovesPreventCheckByCover: (params: GetMovesPreventCheckParams) => Moves
           relativePos: isSameRow? RELATIVE_CHECKED_POS.ROW: RELATIVE_CHECKED_POS.COL,
           kingPos,
           piecePos: pos
-        })
+        });
+        break;
       }
       case (PIECE_NAME.Q): {
         const isSameRow = pos.r === kingPos.r;
@@ -236,7 +238,8 @@ export const getMovesPreventCheck: (params: GetMovesPreventCheckParams) => Moves
   const toRet = {...eatRecord};
 
   function mergeRecord(toMergeRecord: MovesRecord) {
-    Object.keys(toMergeRecord).forEach((pieceId) => {
+    Object.keys(toMergeRecord).forEach((strPieceId: string) => {
+      const pieceId = strPieceId as unknown as number; // typecasting only
       if (! toRet[pieceId]){
         toRet[pieceId] = [...toMergeRecord[pieceId]]
       } else {

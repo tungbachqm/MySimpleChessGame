@@ -13,14 +13,15 @@
 // limitations under the License.
 
 import { BoardController } from './Board';
-import type { StoreState } from './types';
 
-function init(){
-  const boardController = new BoardController();
-  const store: StoreState = {
-    turnCount: 0,
-    isEndgame: false,
+export class Store {
+  public boardController: BoardController;
+  public turnCount: number;
+  public isEndGame: boolean;
+
+  constructor(){
+    this.boardController = new BoardController();
+    this.turnCount = 0;
+    this.isEndGame = false;
   }
-
-  /// how to add events to ...
 }
