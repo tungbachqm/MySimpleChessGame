@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Piece, Board, PlayerColor, Position, MovesRecord } from '../types';
-import { findPieceFromPos } from '../utils';
+import type { Piece, Board, PlayerColor, Position } from '../types';
+import { findPieceFromPos, isValidPos } from '../utils';
 import { getPiecesControl } from '../getPiecesControl';
 import { PIECE_NAME } from '../types';
 import { SIZE } from '../constants';
@@ -24,20 +24,20 @@ const genBishopForArr: (params: {
 }) => number[][][] = ({r, c}) => {
   return [
     [
-      [r+1, SIZE -1, 1],
-      [c+1, SIZE-1, 1]
+      [r+1, SIZE, 1],
+      [c+1, SIZE, 1]
     ],
     [
-      [r-1, 0, -1],
-      [c-1, 0, -1],
+      [r-1, -1, -1],
+      [c-1, -1, -1],
     ],
     [
-      [r-1, 0, -1],
-      [c+1, SIZE-1, 1]
+      [r-1, -1, -1],
+      [c+1, SIZE, 1]
     ],
     [
-      [r+1, SIZE-1, 1],
-      [c-1, 0, -1]
+      [r+1, SIZE, 1],
+      [c-1, -1, -1]
     ]
   ]
 }
@@ -47,20 +47,20 @@ const genRockForArr: (params: {
 }) => number[][][] = ({r, c}) => {
   return [
     [
-      [r+1, SIZE -1, 1],
+      [r+1, SIZE, 1],
       [c, c, 0]
     ],
     [
-      [r-1, 0, -1],
+      [r-1, -1, -1],
       [c, c, 0],
     ],
     [
       [r, r, 0],
-      [c+1, SIZE-1, 1]
+      [c+1, SIZE, 1]
     ],
     [
       [r, r, 0],
-      [c-1, 0, -1]
+      [c-1, -1, -1]
     ]
   ]
 }
@@ -92,7 +92,7 @@ const getMovesFromForArr: (params: {
     const [cStart, cEnd, cStep] = cFor;
     let newR = rStart;
     let newC = cStart;
-    while (newR !== rEnd && newC !== cEnd){
+    while (isValidPos({r: newR, c: newC}) && (newR !== rEnd || newC !== cEnd)){
       const newPiece = findPieceFromPos({
         board,
         record,
@@ -209,7 +209,7 @@ export const getAllMoves: (params: {
     }
     case PIECE_NAME.N: {
       const numArr = [-2, -1, 1, 2];
-      let ret: Position[] = [];
+      const ret: Position[] = [];
       numArr.forEach((rAdd) => {
         numArr.forEach((cAdd) => {
           if (Math.abs(rAdd) !== Math.abs(cAdd)){

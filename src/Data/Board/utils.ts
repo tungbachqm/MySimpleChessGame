@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Board, Piece, PiecesRecord } from './types';
+import type { Board, Piece, PiecesRecord, Position } from './types';
 import { SIZE } from './constants'
+
+export const isValidPos: (pos: Position) => boolean = ({r, c}) => {
+  return r>=0 && r<=SIZE-1 && c>=0 && c<=SIZE-1;
+}
 
 const findPieceFromId: (id: number, record: PiecesRecord) => Piece = (id: number, record) => {
   return record[id];
@@ -21,7 +25,7 @@ const findPieceFromId: (id: number, record: PiecesRecord) => Piece = (id: number
 export const findPieceFromPos: (params: {board: Board, record: PiecesRecord, r: number, c: number}) => Piece | null = ({
   board, r, c, record
 }) => {
-  const id = board[r][c];
+  const id = board[r]?.[c];
   if (typeof id !== 'number'){
     return null;
   }
@@ -102,7 +106,7 @@ export const findNearestPieces: (params: {
     const [cStart, cEnd, cStep] = cFor;
     let newR = rStart;
     let newC = cStart;
-    while (newR <= rEnd && newC <= cEnd){
+    while (newR !== rEnd && newC !== cEnd){
       const piece = findPieceFromPos({
         board,
         record,
@@ -124,7 +128,7 @@ export const findNearestPieces: (params: {
     const [cStart, cEnd, cStep] = cFor;
     let newR = rStart;
     let newC = cStart;
-    while (newR <= rEnd && newC <= cEnd){
+    while (newR !== rEnd && newC !== cEnd){
       const piece = findPieceFromPos({
         board,
         record,

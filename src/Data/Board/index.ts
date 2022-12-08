@@ -16,7 +16,7 @@
  * export only board function - getMove (piece)
  */
 import { initBoardAndPieces } from './initBoard';
-import { Board, MovesRecord, Piece, PiecesRecord, PIECE_NAME, PlayerColor, Position } from './types';
+import { Board, MovesRecord, PiecesRecord, PIECE_NAME, PlayerColor, Position } from './types';
 import { } from './';
 import { getCheckingPieces } from './getCheckingPieces';
 import { getMovesPreventCheck } from './getMovesPreventCheck';
@@ -64,6 +64,15 @@ export class BoardController {
   }
   public getPiecesRecord(){
     return this.piecesRecord;
+  }
+  public findPieceFromPos(pos: Position){
+    const { board, piecesRecord} = this;
+    return findPieceFromPos({
+      board,
+      record: piecesRecord,
+      r: pos.r,
+      c: pos.c
+    })
   }
 
   private getKing(color: PlayerColor){

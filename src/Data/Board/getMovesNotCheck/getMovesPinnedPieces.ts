@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Board, Piece, PiecesRecord, PIECE_NAME, MovesRecord, Position } from "../types";
-import { findNearestPieces, findPieceFromPos } from '../utils';
+import { findNearestPieces, findPieceFromPos, isValidPos } from '../utils';
 import { SIZE } from '../constants';
 
 type GetPinnedPiecesParams = {
@@ -51,8 +51,8 @@ export const getMovesPinnedPieces: (params: GetPinnedPiecesParams) => MovesRecor
     let newR = rStart;
     let newC = cStart;
 
-    let pinnedMoved: Position[] = [];
-    while (newR !== rEnd || newC !== cEnd){
+    const pinnedMoved: Position[] = [];
+    while (isValidPos({r: newR, c: newC}) && (newR !== rEnd || newC !== cEnd)){
       const newPiece = findPieceFromPos({
         board,
         record,

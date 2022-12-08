@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SIZE } from './constants';
 import { Board, Piece, PIECE_NAME, PlayerColor } from './types';
 
 const bottomRow: PIECE_NAME[] = [
@@ -23,18 +24,22 @@ export const initBoardAndPieces: () => {
   piecesRecord: Record<number, Piece>;
   idsRecord: Record<PlayerColor, Set<number>>;
 } = () => {
-  const newBoard: Board = [[]];
+  const newBoard: Board = [];
   const piecesRecord: Record<number, Piece> = {};
   const idsRecord: Record<PlayerColor, Set<number>> = {
     'B': new Set(),
     'W': new Set(),
   }
-  let curId: number = 1;
-  for (let r = 0; r<8; r+=1){
+  for (let r = 0; r<SIZE; r+=1){
+    const newRow = Array(SIZE).fill(null);
+    newBoard.push(newRow);
+  }
+  let curId = 1;
+  for (let r = 0; r<SIZE; r+=1){
     switch(r){
       case 0:
       case 7: {
-        for (let c=0; c<8; c+=1){
+        for (let c=0; c<SIZE; c+=1){
           const color = r === 0? 'W' : 'B';
           const newPiece: Piece = {
             id: curId,

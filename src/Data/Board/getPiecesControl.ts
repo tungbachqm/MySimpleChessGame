@@ -69,7 +69,7 @@ export const getKnightsControl: (params: IsControlParams) => Piece[] = ({
           board,
           record,
           r: newR,
-          c: newR
+          c: newC
         });
         if (newPiece?.name === PIECE_NAME.N && newPiece.color === color){
           ret.push(newPiece);
@@ -116,7 +116,7 @@ const getKingControl: (params: IsControlParams) => Piece[] = ({
     [0, -1], [0, 1],
     [1, -1], [1, 0], [1, 1]
   ];
-  let toRet: Piece[] = [];
+  const toRet: Piece[] = [];
   modArr.forEach(([addR, addC]) => {
     const newR = pos.r+addR;
     const newC = pos.c+addC;
