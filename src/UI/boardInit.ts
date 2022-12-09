@@ -14,9 +14,13 @@
 
 import { Store } from "../Data";
 import "./styles.scss";
+import { PIECE_SVG_URL } from './PieceSVG';
+import { genSquareKey } from './utils';
+import { genSquareClkListener } from './EventListenter';
 
 export function init(){
   const store = new Store();
+  const squreClkEventListener = genSquareClkListener(store);
   const createChessBoard: () => void = () => {
     const board = document.getElementById("chess_board");
     if (! board){
@@ -25,14 +29,27 @@ export function init(){
     const SIZE = 8;
     for (let i = SIZE-1; i>=0; i-=1){
       const newRow = document.createElement("div");
-      newRow.className=("row border d-flex flex-grow-1 flex-shrink-1");
+      newRow.className=("row chess_board_row border d-flex");
       for (let j = 0; j<SIZE; j+=1){
         const piece = store.boardController.findPieceFromPos({r: i, c: j});
         const newCol = document.createElement("div");
         const bgClassName = (i+j)%2 === 0? 'black_item' : 'white_item';
-        newCol.className=(`col border ${bgClassName}`);
-        newCol.innerText=`${piece?.name? piece.name + piece.color : 'N/A'}`;
+        newCol.className=(`col position-relative border ${bgClassName} d-flex flex-grow-1 flex-shrink-1 chess_board_col`);
+        const key = genSquareKey({
+          r: i,
+          c: j
+        });
+        newCol.id = key;
+        newCol.addEventListener('click', () => {
+          squreClkEventListener(key);
+        })
         newRow.appendChild(newCol);
+        const newSvg = piece?.name? document.createElement('img') : null;
+        if (newSvg){
+          newSvg.className = "piece_image"
+          newSvg.src = PIECE_SVG_URL[piece.color][piece.name];
+          newCol.appendChild(newSvg);
+        }
       }
       board.appendChild(newRow)
     }

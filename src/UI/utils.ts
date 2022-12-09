@@ -12,23 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-$white: #c1fdd3;
-$black: #015331;
+import { Position } from '../Data/Board/types';
 
-.white_item {
-  background-color: $white;
+export const genSquareKey: (pos: Position) => string = (pos) => {
+  return `Square:,r${pos.r},c${pos.c}`;
 }
-
-.black_item {
-  background-color: $black;
-}
-
-.chess_board_row {
-  height: 12.5%;
-}
-
-.piece_image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+export const parseSquareKey: (key: string) => Position = (key) => {
+  const splitArr = key.split(',');
+  const rStr = splitArr[1];
+  const cStr = splitArr[2];
+  return {
+    r: parseInt(rStr[1], 10),
+    c: parseInt(cStr[1], 10),
+  }
+} 
