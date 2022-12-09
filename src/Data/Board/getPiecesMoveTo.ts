@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Board, PiecesRecord, PIECE_NAME, PlayerColor, Piece } from './types';
-import { findNearestPieces, findPieceFromPos} from './utils';
+import { PIECE_NAME, Piece } from './types';
+import { findPieceFromPos} from './utils';
 import type { IsControlParams } from './getPiecesControl';
 import { getKnightsControl, getQRBControl } from './getPiecesControl';
 
