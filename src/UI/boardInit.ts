@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { Store } from "../Data";
+import "./styles.scss";
 
 export function init(){
   const store = new Store();
@@ -24,11 +25,12 @@ export function init(){
     const SIZE = 8;
     for (let i = SIZE-1; i>=0; i-=1){
       const newRow = document.createElement("div");
-      newRow.className=("row border");
+      newRow.className=("row border d-flex flex-grow-1 flex-shrink-1");
       for (let j = 0; j<SIZE; j+=1){
         const piece = store.boardController.findPieceFromPos({r: i, c: j});
         const newCol = document.createElement("div");
-        newCol.className=("col border");
+        const bgClassName = (i+j)%2 === 0? 'black_item' : 'white_item';
+        newCol.className=(`col border ${bgClassName}`);
         newCol.innerText=`${piece?.name? piece.name + piece.color : 'N/A'}`;
         newRow.appendChild(newCol);
       }
