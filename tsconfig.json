@@ -5,7 +5,12 @@
     "module": "es6",
     "target": "es5",
     "moduleResolution": "Node",
-    "allowJs": true
+    "allowJs": true,
+    "baseUrl": "./src",
+    "paths": {
+      "asset/*": ["src/asset/*"]
+    },
+    "lib": ["DOM"]
   },
   "files": ["src/index.ts"]
 }

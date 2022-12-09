@@ -66,6 +66,9 @@ const config = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
+        alias: {
+          asset: path.resolve(__dirname, 'src/asset/'),
+        }
     },
 };
 
