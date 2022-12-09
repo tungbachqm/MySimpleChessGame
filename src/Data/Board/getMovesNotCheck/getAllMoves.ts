@@ -225,7 +225,7 @@ export const getAllMoves: (params: {
               if (newPiece.color !== color){
                 ret.push({r: newR, c: newC});
               }
-            } else {
+            } else if (isValidPos({r: newR, c: newC})) {
               ret.push({r: newR, c: newC});
             }
           }
@@ -237,10 +237,10 @@ export const getAllMoves: (params: {
       const isMoved = color === 'W'?
         r !== 1 : r !== 6;
       const dirMul = color === 'W'? 1: -1;
-      const eatPos = [[r + 1, c+1*dirMul], [r-1, c+1*dirMul]]
-      const movePos = [[r, c+1*dirMul]];
-      if (isMoved){
-        movePos.push([r, c+2*dirMul])
+      const eatPos = [[r + 1*dirMul, c-1], [r+1*dirMul, c+1]]
+      const movePos = [[r + 1 * dirMul, c]];
+      if (!isMoved){
+        movePos.push([r + 2*dirMul, c])
       }
       const ret: Position[] = [];
       eatPos.forEach((pos) => {
@@ -251,7 +251,7 @@ export const getAllMoves: (params: {
           c: pos[1]
         })
         if (newPiece){
-          if (newPiece.color === color){
+          if (newPiece.color !== color){
             ret.push({
               r: pos[0],
               c: pos[1]
