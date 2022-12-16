@@ -118,7 +118,7 @@ const getMovesFromForArr: (params: {
   return ret;
 }
 
-const getKingMoves: (params: {
+export const getKingMoves: (params: {
   king: Piece
   board: Board,
   record: Record<number, Piece>;
@@ -160,7 +160,7 @@ const getKingMoves: (params: {
         }
       }
     }
-  })
+  });
   return toRet;
 }
 
