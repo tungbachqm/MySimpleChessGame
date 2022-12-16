@@ -22,3 +22,14 @@
   opacity: 50%;
   border-radius: 50%;
 }
+
+.prev_move_square_highlight {
+  position: absolute;
+  // left: calc(var(--bs-gutter-x) * -.25);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(18, 223, 18);
+  opacity: 80%;
+}

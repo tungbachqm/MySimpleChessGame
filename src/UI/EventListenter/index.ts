@@ -15,6 +15,7 @@
 import type { Store } from '../../Data';
 import { Position, Piece, PIECE_NAME } from '../../Data/Board/types';
 import { highlightMoveableSquare, dehighlightMovableSquare } from './hightLightMovableSquare';
+import { highlightPrevMoveSquare, dehighlightPrevMoveSquare } from './highLightPrevMove';
 import { genSquareKey, parseSquareKey } from '../utils';
 import { movePieceUI } from './movePieceUI';
 
@@ -38,12 +39,14 @@ export const genSquareClkListener: (store: Store) => (key: string) => void = (st
       newPos,
       rankUpName,
     });
+    const oldKey = genSquareKey(oldPos);
+    const newKey = genSquareKey(newPos);
     movePieceUI(
-      genSquareKey(oldPos),
-      genSquareKey(newPos)
+      oldKey,
+      newKey
     )
-    // dehighLightPrevMove
-    // highlightPrevMove
+    dehighlightPrevMoveSquare();
+    highlightPrevMoveSquare([oldKey, newKey]);
   }
 
   /**
@@ -55,7 +58,6 @@ export const genSquareClkListener: (store: Store) => (key: string) => void = (st
   const clickListener = (key: string) => {
     const playSide = boardController.getColor();
     const pos = parseSquareKey(key);
-    console.log('check event listener', pos, playSide);
 
     if (highlightKeysSet.size > 0){
       dehighlightMovableSquare();
@@ -83,11 +85,9 @@ export const genSquareClkListener: (store: Store) => (key: string) => void = (st
     }
 
     const piece = boardController.findPieceFromPos(pos);
-    console.log('check found piece', piece);
     if (piece?.color === playSide){
       const keys = boardController.getMove(piece.id).map((pos) => genSquareKey(pos));
       keys.forEach((key) => highlightKeysSet.add(key));
-      console.log('before highlight moveable', highlightKeysSet);
       highlightMoveableSquare(keys);
       selectPiece = piece;
     }
