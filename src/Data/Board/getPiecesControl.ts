@@ -31,9 +31,9 @@ const getPawnsControl: (params: IsControlParams) => Piece[] = ({
   record,
 }) => {
   const posModArr = color === 'W'? [
-    [-1, -1], [1, 1]
+    [-1, -1], [-1, 1]
   ] : [
-    [-1, 1], [1, 1]
+    [1, -1], [1, 1]
   ]
   const { r, c } = pos;
   const toRet: Piece[] = [];
