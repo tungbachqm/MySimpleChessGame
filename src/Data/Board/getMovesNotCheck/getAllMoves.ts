@@ -138,24 +138,26 @@ const getKingMoves: (params: {
   modArr.forEach(([addR, addC]) => {
     const newR = kingPos.r+addR;
     const newC = kingPos.c+addC;
-    const piece = findPieceFromPos({
-      board,
-      record,
-      r: newR,
-      c: newC
-    });
-    if (! piece || piece.color !== kingSideColor){
-      const otherSideControlPieces = getPiecesControl({
+    if (isValidPos({r: newR, c: newC})){
+      const piece = findPieceFromPos({
         board,
         record,
-        pos: {
-          r: newR,
-          c: newC
-        },
-        color: otherSideColor
-      })
-      if (otherSideControlPieces.length === 0){
-        toRet.push({r: newR, c: newC})
+        r: newR,
+        c: newC
+      });
+      if (! piece || piece.color !== kingSideColor){
+        const otherSideControlPieces = getPiecesControl({
+          board,
+          record,
+          pos: {
+            r: newR,
+            c: newC
+          },
+          color: otherSideColor
+        })
+        if (otherSideControlPieces.length === 0){
+          toRet.push({r: newR, c: newC})
+        }
       }
     }
   })

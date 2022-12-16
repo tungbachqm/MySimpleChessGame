@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Board, PiecesRecord, PIECE_NAME, PlayerColor, Piece } from './types';
-import { findNearestPieces, findPieceFromPos} from './utils';
+import { findNearestPieces, findPieceFromPos, isValidPos} from './utils';
 
 export type IsControlParams = {
   board: Board,
@@ -134,10 +134,13 @@ const getKingControl: (params: IsControlParams) => Piece[] = ({
 }
 
 export const getPiecesControl: (params: IsControlParams) => Piece[] = (params) => {
-  return [
-    ...getKnightsControl(params),
-    ...getPawnsControl(params),
-    ...getQRBControl(params),
-    ...getKingControl(params)
-  ];
+  if (isValidPos(params.pos)){
+    return [
+      ...getKnightsControl(params),
+      ...getPawnsControl(params),
+      ...getQRBControl(params),
+      ...getKingControl(params)
+    ]; 
+  }
+  return [];
 }
