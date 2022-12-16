@@ -15,7 +15,7 @@
 import { Board, Piece, PiecesRecord, PIECE_NAME, PlayerColor, Position, MovesRecord } from "./types";
 import { getPiecesControl } from './getPiecesControl';
 import { getPiecesMoveTo } from './getPiecesMoveTo';
-import { findPieceFromPos } from "./utils";
+import { getKingMoves } from './getMovesNotCheck/getAllMoves';
 
 type GetMovesPreventCheckParams = {
   board: Board,
@@ -30,6 +30,9 @@ const getMovesPreventCheckByEat: (params: GetMovesPreventCheckParams) => MovesRe
   checkPieces
 }) => {
   const toRet: MovesRecord = {};
+  if (checkPieces.length > 1){
+    return toRet;
+  }
   checkPieces.forEach((piece) => {
     const pos = piece.position;
     const eatablePieces = getPiecesControl({
@@ -39,7 +42,12 @@ const getMovesPreventCheckByEat: (params: GetMovesPreventCheckParams) => MovesRe
       color: piece.color === 'W'? 'B' : 'W'
     });
     eatablePieces.forEach((piece) => {
-      toRet[piece.id] = [pos];
+      if (piece.name !== PIECE_NAME.K){
+        /**
+         * king move have special function
+         */
+        toRet[piece.id] = [pos];
+      }
     })
   })
   return toRet;
@@ -53,6 +61,9 @@ const getMovesPreventCheckByCover: (params: GetMovesPreventCheckParams) => Moves
   checkPieces
 }) => {
   const toRet: MovesRecord = {};
+  if (checkPieces.length > 1){
+    return toRet;
+  }
   function findPiecesMoveToAPosition ({
     r, c, color,
   }: {
@@ -193,41 +204,14 @@ const getMovesPreventCheckByKingMove: (params: GetMovesPreventCheckParams) => Mo
   if (checkPieces.length <1){
     return toRet;
   }
-  const otherSideColor = checkPieces[0].color;
-  const {color: kingSideColor, position: kingPos }= king;
-  const modArr = [
-    [-1, -1], [-1, -0], [-1, 1],
-    [0, -1], [0, 1],
-    [1, -1], [1, 0], [1, 1]
-  ];
-  modArr.forEach(([addR, addC]) => {
-    const newR = kingPos.r+addR;
-    const newC = kingPos.c+addC;
-    const piece = findPieceFromPos({
-      board,
-      record,
-      r: newR,
-      c: newC
-    });
-    if (! piece || piece.color !== kingSideColor){
-      const otherSideControlPieces = getPiecesControl({
-        board,
-        record,
-        pos: {
-          r: newR,
-          c: newC
-        },
-        color: otherSideColor
-      })
-      if (otherSideControlPieces.length === 0){
-        if (toRet[king.id]){
-          toRet[king.id].push({r: newR, c: newC});
-        } else {
-          toRet[king.id] = [{r: newR, c: newC}];
-        }
-      }
-    }
+  const kingMoves = getKingMoves({
+    king,
+    board,
+    record,
   })
+  if (kingMoves.length > 0){
+    toRet[king.id] = kingMoves;
+  }
   return toRet;
 }
 
@@ -250,21 +234,5 @@ export const getMovesPreventCheck: (params: GetMovesPreventCheckParams) => Moves
   mergeRecord(coverRecord);
   mergeRecord(kingMoveRecord);
 
-  const kingId = params.king.id;
-  /**
-   * because prevent by eat and prevent by king move may have same move
-   */
-  if (toRet[kingId]){
-    const kingMoveSet = new Set();
-    const newMoveArr: Position[] = [];
-    toRet[kingId].forEach((move) => {
-      const setKey = `r${move.r}c${move.c}`;
-      if (! kingMoveSet.has(setKey)){
-        kingMoveSet.add(setKey);
-        newMoveArr.push(move);
-      }
-    })
-    toRet[kingId] = newMoveArr;
-  }
   return toRet;
 }

@@ -106,7 +106,7 @@ export const findNearestPieces: (params: {
     const [cStart, cEnd, cStep] = cFor;
     let newR = rStart;
     let newC = cStart;
-    while (newR !== rEnd && newC !== cEnd){
+    while (isValidPos({r: newR, c: newC}) &&(newR !== rEnd || newC !== cEnd)){
       const piece = findPieceFromPos({
         board,
         record,
@@ -128,7 +128,7 @@ export const findNearestPieces: (params: {
     const [cStart, cEnd, cStep] = cFor;
     let newR = rStart;
     let newC = cStart;
-    while (newR !== rEnd && newC !== cEnd){
+    while (isValidPos({r: newR, c: newC}) &&(newR !== rEnd || newC !== cEnd)){
       const piece = findPieceFromPos({
         board,
         record,
@@ -143,6 +143,5 @@ export const findNearestPieces: (params: {
       newC += cStep;
     }
   })
-
   return toRet;
 }
