@@ -146,8 +146,17 @@ export const getKingMoves: (params: {
         c: newC
       });
       if (! piece || piece.color !== kingSideColor){
+        /**
+         * to avoid case that the king is checked and the new pos is control by opp after king move
+         */
+        const tempBoard: Board = [];
+        board.forEach((row) => {
+          tempBoard.push([...row]);
+        });
+        tempBoard[kingPos.r][kingPos.c] = null;
+        tempBoard[newR][newC] = king.id;
         const otherSideControlPieces = getPiecesControl({
-          board,
+          board: tempBoard,
           record,
           pos: {
             r: newR,
