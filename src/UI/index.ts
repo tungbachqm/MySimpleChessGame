@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const movePieceUI= (oldPosKey: string, newPosKey: string, newSrc?: string) => {
-  const oldSquare = document.getElementById(oldPosKey);
-  const newSquare = document.getElementById(newPosKey);
+import { init as boardInit } from './boardInit';
+import { initMessageBox } from './MessageBox';
 
-  if (oldSquare && newSquare){
-    const childList = oldSquare.childNodes;
-    newSquare.replaceChildren();
-    if (newSrc){
-      const svgChild = oldSquare.getElementsByTagName('img');
-      svgChild.item(0).src = newSrc;
-    }
-    childList.forEach((child) => {
-      newSquare.appendChild(child);
-    })
-    oldSquare.replaceChildren();
-  }
+export const init = () => {
+  boardInit();
+  initMessageBox();
 }

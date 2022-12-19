@@ -18,24 +18,22 @@ import { highlightMoveableSquare, dehighlightMovableSquare } from './hightLightM
 import { highlightPrevMoveSquare, dehighlightPrevMoveSquare } from './highLightPrevMove';
 import { genSquareKey, parseSquareKey } from '../utils';
 import { movePieceUI } from './movePieceUI';
+import { initRankUpMsgBox, hideMessageBox } from '../MessageBox';
+import { PIECE_SVG_URL } from '../PieceSVG';
 
-// enum PLAY_STATE {
-//   SELECT_PIECE = 'select_piece',
-//   SELECT_MOVE = 'select_move',
-// }
 export const genSquareClkListener: (store: Store) => (key: string) => void = (store) => {
   const highlightKeysSet = new Set<string>();
   let selectPiece: Piece | null = null;
   const { boardController } = store;
 
   const movePiece = ({
-    pieceId, newPos, oldPos, rankUpName
-  }: { pieceId: number, newPos: Position, 
+    piece, newPos, oldPos, rankUpName
+  }: { piece: Piece, newPos: Position, 
     oldPos: Position,
-    rankUpName: PIECE_NAME | null
+    rankUpName: PIECE_NAME | null,
   }) => {
     boardController.movePiece({
-      pieceId,
+      pieceId: piece.id,
       newPos,
       rankUpName,
     });
@@ -43,7 +41,8 @@ export const genSquareClkListener: (store: Store) => (key: string) => void = (st
     const newKey = genSquareKey(newPos);
     movePieceUI(
       oldKey,
-      newKey
+      newKey,
+      rankUpName? PIECE_SVG_URL[piece.color][rankUpName] : undefined
     )
     dehighlightPrevMoveSquare();
     highlightPrevMoveSquare([oldKey, newKey]);
@@ -63,25 +62,36 @@ export const genSquareClkListener: (store: Store) => (key: string) => void = (st
       dehighlightMovableSquare();
       if (highlightKeysSet.has(key)){
         /// move piece to Key
-        let rankUpName: PIECE_NAME | null = null;
         if (boardController.rankUpCheck({
           pieceId: selectPiece.id,
           newPos: pos,
         })) {
           // pop up rank up - this is handle by another
-          rankUpName = PIECE_NAME.Q;
-          console.log('checl rank up', rankUpName)
+          initRankUpMsgBox({
+            color: selectPiece.color,
+            onRankUp: (pieceName) => {
+              movePiece({
+                piece: selectPiece,
+                newPos: pos,
+                oldPos: selectPiece.position,
+                rankUpName: pieceName
+              });
+              hideMessageBox();
+              highlightKeysSet.clear();
+              selectPiece = null;
+            }
+          })
         } else {
           movePiece({
-            pieceId: selectPiece.id,
+            piece: selectPiece,
             newPos: pos,
             oldPos: selectPiece.position,
-            rankUpName,
+            rankUpName: null
           });
+          highlightKeysSet.clear();
+          selectPiece = null;
         }
       }
-      highlightKeysSet.clear();
-      selectPiece = null;
     }
 
     const piece = boardController.findPieceFromPos(pos);

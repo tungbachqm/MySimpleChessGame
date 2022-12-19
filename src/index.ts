@@ -1,5 +1,5 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { init } from './UI/boardInit';
+import { init } from './UI';
 init();
