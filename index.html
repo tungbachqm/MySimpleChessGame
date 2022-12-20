@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"/><title>Webpack App</title><script defer="defer" src="main.js"></script><link href="main.css" rel="stylesheet"></head><body><div class="container-fluid vh-100"><div class="row h-100"><div class="col-8 border d-flex flex-column justify-content-center position-relative"><div id="chess_board" class="col-12 d-flex flex-column" style="aspect-ratio: 1/1;"></div><div id="message_box"></div></div><div class="col-4 border"><div class="row"><div class="col-6">Player1</div><div class="col-6">P2</div></div><div class="row"><div class="col-6">Move1</div><div class="col-6">Move2</div></div></div></div></div></body><script>if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker
+                    .register("service-worker.js")
+                    .then((registration) => {
+                        console.log("Service Worker registered: ", registration);
+                    })
+                    .catch((registrationError) => {
+                        console.error("Service Worker registration failed: ", registrationError);
+                    });
+            });
+        }</script></html>
